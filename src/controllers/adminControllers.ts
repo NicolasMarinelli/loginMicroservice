@@ -1,6 +1,6 @@
 import express, {Request,Response,NextFunction} from "express";
 import {pool} from '../services/Database';
-import { GeneratePassword, GenerateSalt, GenerateSignature, ValidatePassword } from "../utility";
+import { GeneratePassword, GenerateSalt, GenerateSignature, ValidatePassword } from "../utility/PasswordUtility";
 import { CreateVandorInput, VandorLoginInputs } from "../dto/Vandor.dto";
 
 

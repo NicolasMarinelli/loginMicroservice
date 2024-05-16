@@ -11,11 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.singinController = exports.signUpController = void 0;
 const Database_1 = require("../services/Database");
-const utility_1 = require("../utility");
+const PasswordUtility_1 = require("../utility/PasswordUtility");
 const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, email, password } = req.body;
-    const salt = yield (0, utility_1.GenerateSalt)();
-    const gPassword = yield (0, utility_1.GeneratePassword)(password, salt);
+    const salt = yield (0, PasswordUtility_1.GenerateSalt)();
+    const gPassword = yield (0, PasswordUtility_1.GeneratePassword)(password, salt);
     const values = [username, email, gPassword, salt];
     Database_1.pool.query("INSERT INTO user (username,email,password,sal) VALUES (?,?,?,?)", values);
     return res.json({ message: "generated user" });
@@ -27,9 +27,9 @@ const singinController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     const existingUser = JSON.parse(JSON.stringify(rows))[0];
     if (existingUser !== null) {
         //validation and give access
-        const validation = yield (0, utility_1.ValidatePassword)(password, existingUser.password, existingUser.sal);
+        const validation = yield (0, PasswordUtility_1.ValidatePassword)(password, existingUser.password, existingUser.sal);
         if (validation) {
-            const signature = (0, utility_1.GenerateSignature)({
+            const signature = (0, PasswordUtility_1.GenerateSignature)({
                 _id: existingUser.id,
                 email: existingUser.email,
                 username: existingUser.name,
